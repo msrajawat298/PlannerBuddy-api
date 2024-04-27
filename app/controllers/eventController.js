@@ -24,8 +24,8 @@ export const getEvent = async (req, res) => {
 
 export const getEventByid = async (req, res) => {
   try {
-    const {userId} = req;
-    const {eventId} = req.query;
+    const { userId } = req;
+    const { eventId } = req.query;
     // Check if userId and eventId are provided
     if (!eventId) {
       throw new Error('eventId is required');
@@ -45,17 +45,14 @@ export const getEventByid = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
   try {
-    const {userId} = req;
-    const {eventId} = req.body;
-    const {status} = req.body;
+    const { userId } = req;
+    const { eventId } = req.body;
+    const { status } = req.body;
     // Check if userId and eventId are provided
     if (!eventId) {
       throw new Error('eventId is required');
     }
-    const events = await Event.update(
-      { eventStatus: status },
-      { where: { userId, eventId } }
-    );
+    const events = await Event.update({ eventStatus: status }, { where: { userId, eventId } });
 
     if (!events || userId !== events.userId) {
       throw new Error('Data not found');
@@ -69,8 +66,8 @@ export const updateStatus = async (req, res) => {
 
 export const deleteById = async (req, res) => {
   try {
-    const {userId} = req;
-    const {eventId} = req.query;
+    const { userId } = req;
+    const { eventId } = req.query;
     // Check if userId and eventId are provided
     if (!eventId) {
       throw new Error('eventId is required');
@@ -82,6 +79,16 @@ export const deleteById = async (req, res) => {
     }
 
     res.status(200).send({ message: 'Request completed' });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const addGuestToEVent = async (req, res) => {
+  try {
+    const guests = req.body.guests;
+    const events = await Event.bulkCreate(guests);
+    res.status(200).send({ message: 'Guest added completed' });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
