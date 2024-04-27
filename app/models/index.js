@@ -15,7 +15,7 @@ const db = {
   role: createRoleModel(sequelize, Sequelize),
   guests: createGuestModel(sequelize, Sequelize),
   events: createEventModel(sequelize, Sequelize),
-  events: createEventGuestModel(sequelize, Sequelize),
+  event_guests: createEventGuestModel(sequelize, Sequelize),
   ROLES: ['user', 'admin']
 };
 

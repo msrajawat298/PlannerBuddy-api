@@ -86,8 +86,8 @@ export const deleteById = async (req, res) => {
 
 export const addGuestToEVent = async (req, res) => {
   try {
-    const guests = req.body.guests;
-    const events = await Event.bulkCreate(guests);
+    const {guests} = req.body;
+    await Event.bulkCreate(guests);
     res.status(200).send({ message: 'Guest added completed' });
   } catch (err) {
     res.status(500).send({ message: err.message });
