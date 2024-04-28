@@ -15,8 +15,28 @@ export const addEvent = (req, res) => {
 export const getEvent = async (req, res) => {
   try {
     const { userId } = req;
-    const events = await Event.findAll({ userId });
-    res.status(200).send({ error: false, message: 'Request completed', event: events });
+    const { page = 1, limit = 10 } = req.query; // default page 1 & default limit 10
+
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+
+    const offset = (parsedPage - 1) * parsedLimit;
+
+    const events = await Event.findAndCountAll({ where: { userId }, limit: parsedLimit, offset });
+
+    const totalPages = Math.ceil(events.count / parsedLimit);
+    if (parsedPage > totalPages) {
+      res.status(400).send({ error: true, message: 'No data found' });
+      return;
+    }
+    res.status(200).send({
+      error: false,
+      message: 'Request completed',
+      events: events.rows,
+      currentPage: parsedPage,
+      totalPages,
+      totalData: events.count
+    });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }
