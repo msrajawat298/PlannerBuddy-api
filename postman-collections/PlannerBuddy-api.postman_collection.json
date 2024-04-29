@@ -1,50 +1,71 @@
 {
 	"info": {
-		"_postman_id": "b07aa951-9cf5-4fb6-a3c4-d7eb7cfdd594",
+		"_postman_id": "191c1cde-9ff2-47e1-b204-4cd0aabb3fa3",
 		"name": "PlannerBuddy-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20223834"
+		"_exporter_id": "21993237",
+		"_collection_link": "https://vitabletech.postman.co/workspace/vitabletech-Workspace~f35a41a5-be1f-4f28-8e90-39891dd609fd/collection/21993237-191c1cde-9ff2-47e1-b204-4cd0aabb3fa3?action=share&source=collection_link&creator=21993237"
 	},
 	"item": [
 		{
 			"name": "auth",
 			"item": [
 				{
-					"name": "api/auth/signup",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@test.com\",\n    \"password\": \"1234\",\n    \"role\": \"admin\"\n\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "api/auth/signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body has required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  postman.setEnvironmentVariable(\"token\", responseData.accessToken);",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.id).to.exist.and.to.be.a('number');",
+									"  pm.expect(responseData.username).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.email).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.roles).to.exist.and.to.be.an('array');",
+									"  pm.expect(responseData.accessToken).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"pm.test(\"Username is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.username).to.be.a('string').and.to.have.length.at.least(1, \"Username should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Roles array should not be empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.roles).to.be.an('array').that.is.not.empty;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
-						},
-						"url": {
-							"raw": "{{url}}/api/auth/signup",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"signup"
-							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "{{url}}/api/auth/signin",
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"Romesh\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"Dora.Wiegand42@gmail.com\",\n    \"password\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,11 +85,313 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "api/auth/signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed checking for 'message' property",
+									"pm.test(\"Response has the required field 'message'\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object').that.has.property('message');",
+									"});",
+									"",
+									"// Fixed message validation",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"// Fixed response time test",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is not null\", function () {",
+									"  const responseData = pm.response.json();",
+									"  pm.expect(responseData.message).to.not.be.null;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is not an empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.message).to.exist.and.to.not.be.empty;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure of the response JSON\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify the response includes the required fields for signup\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"1234567890\",\n    \"phoneNumber\": \"1234567890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "guest-management",
+			"name": "Event Management",
+			"item": [
+				{
+					"name": "Add event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventName\":\"Birthday\",\r\n    \"eventDate\":\"2024-04-30\",\r\n    \"eventTime\" :\"19:30\",\r\n    \"eventLocation\":\"{{$randomCity}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/add-event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"add-event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"console.log((response.event));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/get-event",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"get-event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/get-event-by-id?eventId=18",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"get-event-by-id"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/delete-event-by-id?eventId=21",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"delete-event-by-id"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event to guests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"guests\": [\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 101\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/add-event-guests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"add-event-guests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\":\"1\",\r\n    \"eventName\":\"\",\r\n    \"eventDate\":\"\",\r\n    \"eventTime\":\"\",\r\n    \"eventLocation\":\"\",\r\n    \"eventStatus\":\"11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/update-status",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Guest Management",
 			"item": [
 				{
 					"name": "Update Guest",
@@ -77,7 +400,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"New User maayk\",\n    \"contact\":\"7655940312\",\n    \"guestId\": \"1\"\n}",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"contact\": \"{{$randomPhoneNumber}}\",\n    \"guestId\": \"3\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -108,7 +431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"contact\": \"123456789\"\n}"
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"contact\": \"{{$randomPhoneNumber}}\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/addguest",
@@ -148,15 +471,42 @@
 			]
 		},
 		{
-			"name": "Event Management",
+			"name": "User Management",
 			"item": [
 				{
-					"name": "Add event",
+					"name": "{{url}}/api/user",
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "POST",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{url}}/api/user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
 						"header": [
 							{
 								"key": "x-access-token",
@@ -166,7 +516,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"eventName\":\"Birthday\",\r\n    \"eventDate\":\"2024-04-30\",\r\n    \"eventTime\" :\"19:30\",\r\n    \"eventLocation\":\"Indore\"\r\n}",
+							"raw": "{\n    \"fullName\" : \"Mayank Singh\",\n    \"phoneNumber\" : \"1234321233\",\n    \"password\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,19 +524,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/add-event",
+							"raw": "{{url}}/api/user",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"add-event"
+								"api",
+								"user"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "All events",
+					"name": "{{url}}/api/admin",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -197,216 +548,19 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/get-event",
+							"raw": "{{url}}/api/admin",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"get-event"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get event by Id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/get-event-by-id?eventId=1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"get-event-by-id"
-							],
-							"query": [
-								{
-									"key": "eventId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete By Id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/delete-event-by-id?eventId=10",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"delete-event-by-id"
-							],
-							"query": [
-								{
-									"key": "eventId",
-									"value": "10"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update event",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"eventId\":\"1\",\r\n    \"eventName\":\"\",\r\n    \"eventDate\":\"\",\r\n    \"eventTime\":\"\",\r\n    \"eventLocation\":\"\",\r\n    \"eventStatus\":\"11\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/update-status",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"update-status"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add event to guests",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"guests\": [\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 101\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/add-event-guests",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"add-event-guests"
+								"api",
+								"admin"
 							]
 						}
 					},
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "{{url}}/api/test/all",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/test/all",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"test",
-						"all"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/api/test/user",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-access-token",
-						"value": "{{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{url}}/api/test/user",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"test",
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/api/test/admin",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/test/admin",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"test",
-						"admin"
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }
