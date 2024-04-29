@@ -1,6 +1,6 @@
 import db from '../models/index.js';
 
-const { events: Event } = db;
+const { events: Event, event_guests: EventGuests } = db;
 
 export const addEvent = (req, res) => {
   try {
@@ -106,10 +106,10 @@ export const deleteById = async (req, res) => {
   }
 };
 
-export const addGuestToEVent = async (req, res) => {
+export const addGuestToEvent = async (req, res) => {
   try {
     const { guests } = req.body;
-    await Event.bulkCreate(guests);
+    await EventGuests.bulkCreate(guests);
     res.status(200).send({ error: false, message: 'Guest added completed' });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });

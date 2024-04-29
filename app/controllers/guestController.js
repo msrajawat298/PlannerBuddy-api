@@ -5,17 +5,17 @@ const { guests: Guest } = db;
 // Method to add new guests
 export const addGuest = (req, res) => {
   // Destructure required fields from the request body
-  const { name, contact, email, address } = req.body;
+  const { name, phoneNumber, email, address } = req.body;
 
   // Check if the required fields are provided
-  if (!name || !contact) {
-    return res.status(400).json({ error: 'Name and contact are mandatory fields.' });
+  if (!name || !phoneNumber) {
+    return res.status(400).json({ error: 'Name and phoneNumber are mandatory fields.' });
   }
   
   // Create a new Guest object with provided data
   return Guest.create({
     name,
-    contact,
+    phoneNumber,
     email, // email not a mandatory parameter
     address // It's okay if these are undefined
   })
@@ -50,8 +50,8 @@ export const deleteGuest = (req, res) => {
 
 // Method to update details of an existing guest
 export const updateGuest = (req, res) => {
-  const { name, contact, email, address, guestId } = req.body;
-  const updateData = { name, contact };
+  const { name, phoneNumber, email, address, guestId } = req.body;
+  const updateData = { name, phoneNumber };
   if (email !== undefined) {
     updateData.email = email;
   }

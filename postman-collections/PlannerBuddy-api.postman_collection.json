@@ -400,7 +400,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"contact\": \"{{$randomPhoneNumber}}\",\n    \"guestId\": \"3\"\n}",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\n    \"guestId\": \"3\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -431,7 +431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"contact\": \"{{$randomPhoneNumber}}\"\n}"
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/addguest",

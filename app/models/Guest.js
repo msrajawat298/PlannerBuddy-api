@@ -7,12 +7,11 @@ export default (sequelize, Sequelize) => {
     },
     name: {
       type: Sequelize.STRING
-      
-    },
-    contact: {
-      type: Sequelize.STRING
     },
     email: {
+      type: Sequelize.STRING
+    },
+    phoneNumber: {
       type: Sequelize.STRING
     },
     address: {
