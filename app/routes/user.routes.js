@@ -1,5 +1,6 @@
 import authJwt from '../middleware/authJwt.js';
-import { allAccess, userBoard, adminBoard } from '../controllers/userController.js';
+import { getUserDetails, updateUsers, adminBoard } from '../controllers/userController.js';
+import validate from '../Validations/userValidation.js';
 
 export default function userRoutes(app) {
   app.use((req, res, next) => {
@@ -10,17 +11,7 @@ export default function userRoutes(app) {
     next();
   });
 
-  app.get('/api/test/all', allAccess);
-
-  app.get(
-    '/api/test/user',
-    [authJwt.verifyToken],
-    userBoard
-  );
-
-  app.get(
-    '/api/test/admin',
-    [authJwt.verifyToken, authJwt.isAdmin],
-    adminBoard
-  );
+  app.get( '/api/user', [authJwt.verifyToken], getUserDetails);
+  app.put( '/api/user', [authJwt.verifyToken, validate.userUpdateValidation], updateUsers);
+  app.get('/api/admin',[authJwt.verifyToken, authJwt.isAdmin],adminBoard);
 }
