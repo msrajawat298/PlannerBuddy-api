@@ -108,9 +108,15 @@ export const deleteById = async (req, res) => {
 
 export const addGuestToEvent = async (req, res) => {
   try {
-    const { guests } = req.body;
-    await EventGuests.bulkCreate(guests);
-    res.status(200).send({ error: false, message: 'Guest added completed' });
+    const { eventId, guestId } = req.body;
+    // Filter out duplicate guestIds
+    const uniqueGuestIds = [...new Set(guestId)];
+
+    // Prepare the data to be inserted
+    const eventData = uniqueGuestIds.map((id) => ({ eventId, guestId: id }));
+    // Perform bulk create operation, ignoring duplicates
+    await EventGuests.bulkCreate(eventData, { ignoreDuplicates: true });
+    res.status(200).send({ error: false, message: 'Guests added successfully' });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }

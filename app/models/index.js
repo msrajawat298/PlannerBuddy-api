@@ -5,6 +5,7 @@ import createRoleModel from './Role.js';
 import createGuestModel from './Guest.js';
 import createEventModel from './Event.js';
 import createEventGuestModel from './EventGuest.js';
+import createEventGiftModel from './EventGift.js';
 
 const sequelize = new Sequelize({...DB_CONFIG});
 
@@ -16,6 +17,7 @@ const db = {
   guests: createGuestModel(sequelize, Sequelize),
   events: createEventModel(sequelize, Sequelize),
   event_guests: createEventGuestModel(sequelize, Sequelize),
+  event_gift: createEventGiftModel(sequelize, Sequelize),
   ROLES: ['user', 'admin']
 };
 
