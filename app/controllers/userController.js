@@ -21,9 +21,9 @@ export const getUserDetails = async (req, res) => {
   const { userId } = req;
   const userData = await USER.findOne({ where: { id: userId }, attributes: ['id', 'fullName', 'email'] });
   if (userData) {
-    res.status(200).send({error: false, data: userData});
+    return res.status(200).send({error: false, data: userData});
   }
-  res.status(200).send({error: true, message: 'User not found!'});
+  return res.status(200).send({error: true, message: 'User not found!'});
 };
 
 export const adminBoard = (req, res) => {
