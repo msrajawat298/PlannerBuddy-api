@@ -13,7 +13,8 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     address: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: true
     }
   });
 
