@@ -11,6 +11,9 @@ export default (sequelize, Sequelize) => {
     },
     phoneNumber: {
       type: Sequelize.STRING
+    },
+    address: {
+      type: Sequelize.STRING
     }
   });
 
