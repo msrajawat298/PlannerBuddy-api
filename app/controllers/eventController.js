@@ -45,7 +45,7 @@ export const getEvent = async (req, res) => {
 export const getEventByid = async (req, res) => {
   try {
     const { userId } = req;
-    const { eventId } = req.query;
+    const { eventId } = req.params;
     // Check if userId and eventId are provided
     if (!eventId) {
       res.status(422).send({ error: true, message: 'eventId is required' });
@@ -89,28 +89,33 @@ export const updateStatus = async (req, res) => {
 export const deleteById = async (req, res) => {
   try {
     const { userId } = req;
-    const { eventId } = req.query;
+    const { eventId } = req.params;
     // Check if userId and eventId are provided
     if (!eventId) {
-      res.status(422).send({ error: true, message: 'eventId is required' });
+      return res.status(422).send({ error: true, message: 'eventId is required' });
     }
     const events = await Event.destroy({ where: { userId, eventId } });
-
     if (!events) {
-      res.status(404).send({ error: true, message: 'Data not found' });
+      return res.status(404).send({ error: true, message: 'Data not found' });
     }
 
-    res.status(200).send({ error: false, message: 'Request completed' });
+    return res.status(200).send({ error: false, message: 'Request completed' });
   } catch (err) {
-    res.status(500).send({ error: true, message: err.message });
+    return res.status(500).send({ error: true, message: err.message });
   }
 };
 
 export const addGuestToEvent = async (req, res) => {
   try {
-    const { guests } = req.body;
-    await EventGuests.bulkCreate(guests);
-    res.status(200).send({ error: false, message: 'Guest added completed' });
+    const { eventId, guestId } = req.body;
+    // Filter out duplicate guestIds
+    const uniqueGuestIds = [...new Set(guestId)];
+
+    // Prepare the data to be inserted
+    const eventData = uniqueGuestIds.map((id) => ({ eventId, guestId: id }));
+    // Perform bulk create operation, ignoring duplicates
+    await EventGuests.bulkCreate(eventData, { ignoreDuplicates: true });
+    res.status(200).send({ error: false, message: 'Guests added successfully' });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }

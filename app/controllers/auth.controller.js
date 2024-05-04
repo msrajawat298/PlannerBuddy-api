@@ -62,7 +62,7 @@ export const signin = async (req, res) => {
       }
       const accessToken = await generateToken(user.id);
       user.getRoles().then(() => {
-        res.status(200).send({error:false, accessToken });
+        res.status(200).send({error:false, userId: user.id, fullName: user.fullName, email: user.email, phoneNumber: user.phoneNumber, address: user.address, accessToken });
       });
     })
     .catch(err => res.status(500).send({error: true, message: err.message }));
