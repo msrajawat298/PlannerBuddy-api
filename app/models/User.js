@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
   const User = sequelize.define('users', {
-    username: {
+    fullName: {
       type: Sequelize.STRING
     },
     email: {
@@ -8,6 +8,13 @@ export default (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
+    },
+    phoneNumber: {
+      type: Sequelize.STRING
+    },
+    address: {
+      type: Sequelize.STRING,
+      allowNull: true
     }
   });
 

@@ -5,14 +5,17 @@ export default (sequelize, Sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
-      type: Sequelize.STRING
-      
+    userId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     },
-    contact: {
+    name: {
       type: Sequelize.STRING
     },
     email: {
+      type: Sequelize.STRING
+    },
+    phoneNumber: {
       type: Sequelize.STRING
     },
     address: {
