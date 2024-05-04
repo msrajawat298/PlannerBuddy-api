@@ -5,6 +5,10 @@ export default (sequelize, Sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
+    userId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     name: {
       type: Sequelize.STRING
     },

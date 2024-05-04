@@ -25,5 +25,4 @@ const addEventValidation = (req, res, next) => {
 const validate = {
   addEventValidation
 };
-
 export default validate;
