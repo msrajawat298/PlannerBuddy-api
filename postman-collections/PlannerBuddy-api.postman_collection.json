@@ -17,7 +17,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
 									"pm.test(\"Response status code is 200\", function () {",
 									"    pm.expect(pm.response.code).to.equal(200);",
 									"});",
@@ -32,27 +31,8 @@
 									"  const responseData = pm.response.json();",
 									"  postman.setEnvironmentVariable(\"token\", responseData.accessToken);",
 									"  pm.expect(responseData).to.be.an('object');",
-									"  pm.expect(responseData.id).to.exist.and.to.be.a('number');",
-									"  pm.expect(responseData.username).to.exist.and.to.be.a('string');",
-									"  pm.expect(responseData.email).to.exist.and.to.be.a('string');",
-									"  pm.expect(responseData.roles).to.exist.and.to.be.an('array');",
 									"  pm.expect(responseData.accessToken).to.exist.and.to.be.a('string');",
 									"});",
-									"",
-									"pm.test(\"Username is a non-empty string\", function () {",
-									"  const responseData = pm.response.json();",
-									"  ",
-									"  pm.expect(responseData).to.be.an('object');",
-									"  pm.expect(responseData.username).to.be.a('string').and.to.have.length.at.least(1, \"Username should not be empty\");",
-									"});",
-									"",
-									"",
-									"pm.test(\"Roles array should not be empty\", function () {",
-									"    const responseData = pm.response.json();",
-									"    ",
-									"    pm.expect(responseData.roles).to.be.an('array').that.is.not.empty;",
-									"});",
-									"",
 									""
 								],
 								"type": "text/javascript",
@@ -65,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"Dora.Wiegand42@gmail.com\",\n    \"password\": \"1234567890\"\n}",
+							"raw": "{\n    \"email\": \"test@user.com\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -157,7 +137,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"fullName\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"1234567890\",\n    \"phoneNumber\": \"1234567890\"\n}",
+							"raw": "{\n    \"fullName\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password\",\n    \"phoneNumber\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -206,7 +186,7 @@
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"uuid": "af3895ed-4ee8-4ddb-a4a3-c06c964a7b41"
 							}
 						],
 						"body": {
@@ -219,106 +199,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/add-event",
+							"raw": "{{url}}/event",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"add-event"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "All events",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const response = pm.response.json();",
-									"console.log((response.event));"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/get-event",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"get-event"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get event by Id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/get-event-by-id?eventId=18",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"get-event-by-id"
-							],
-							"query": [
-								{
-									"key": "eventId",
-									"value": "18"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete By Id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-access-token",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{url}}/delete-event-by-id?eventId=21",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"delete-event-by-id"
-							],
-							"query": [
-								{
-									"key": "eventId",
-									"value": "21"
-								}
+								"event"
 							]
 						}
 					},
@@ -332,12 +218,12 @@
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"uuid": "24da4b8a-c8dd-4400-9030-7b8c276109e9"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"guests\": [\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 101\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        },\r\n        {\r\n            \"eventId\": 1,\r\n            \"guestId\": 102\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"eventId\": 1,\r\n    \"guestId\": [\r\n        1,\r\n        2,\r\n        3,\r\n        4,\r\n        5\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,12 +231,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/add-event-guests",
+							"raw": "{{url}}/event/guests",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"add-event-guests"
+								"event",
+								"guests"
 							]
 						}
 					},
@@ -364,7 +251,7 @@
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"uuid": "893cc8e1-caea-4b62-a876-44781d0c3654"
 							}
 						],
 						"body": {
@@ -377,12 +264,122 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/update-status",
+							"raw": "{{url}}/event/update",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"update-status"
+								"event",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All events with sorting and filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"console.log((response.events));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "e484f708-a5a5-4d07-9f34-c825a52216e2"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/event?page=1&limit=2&order=ASC&filter={\"eventName\":\"Wedding\"}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "order",
+									"value": "ASC"
+								},
+								{
+									"key": "filter",
+									"value": "{\"eventName\":\"Wedding\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "a2063187-afe7-4209-ace6-de59b72558bd"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/event/18",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "8e9a4bc7-c209-477c-a46d-dab15a63767b"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/event/21",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"21"
 							]
 						}
 					},
@@ -394,13 +391,51 @@
 			"name": "Guest Management",
 			"item": [
 				{
+					"name": "Add Guest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "e8b6dfff-a6cc-4dae-a008-620dbc26c92d"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "8bf15c41-fd82-41bc-86cb-f38a61359b8c"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"phoneNumber\": \"7043344334\",\n    \"email\":  \"{{$randomEmail}}\"\n\n}"
+						},
+						"url": {
+							"raw": "{{url}}/guest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Guest",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "36332e30-aa56-45db-b7bf-caae5f08c282"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\n    \"guestId\": \"3\"\n}",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\"\n    // \"phoneNumber\": \"7043344334\",\n    // \"email\":  \"{{$randomEmail}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -408,38 +443,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/updateguest",
+							"raw": "{{url}}/guest/2",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"updateguest"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Guest",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/addguest",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"addguest"
+								"guest",
+								"2"
 							]
 						}
 					},
@@ -449,20 +459,131 @@
 					"name": "Delete Guest",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "867f9d23-b771-4701-87a6-0ae4bc7357ce"
+							}
+						],
 						"url": {
-							"raw": "{{url}}/deleteguest?guestid=8",
+							"raw": "{{url}}/guest?guestId=8",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"deleteguest"
+								"guest"
 							],
 							"query": [
 								{
-									"key": "guestid",
+									"key": "guestId",
 									"value": "8"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Guest with sorting and filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"console.log((response.guests.length));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "5a6bd0e2-1a8a-4a3f-80af-00462bb436f7"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/guest?page=1&limit=20&order=ASC&filter={\"name\":\"Cynthia\"}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guest"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "order",
+									"value": "ASC"
+								},
+								{
+									"key": "filter",
+									"value": "{\"name\":\"Cynthia\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Guest By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"console.log((response.events));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "7a9e6353-01c3-4eee-8eee-d5a0746b6d6b"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/guest/20",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"guest",
+								"20"
 							]
 						}
 					},
@@ -474,7 +595,7 @@
 			"name": "User Management",
 			"item": [
 				{
-					"name": "{{url}}/api/user",
+					"name": "Get User Details",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -484,7 +605,8 @@
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "015efba0-936c-40cb-a4c9-a5d3947d3c8c"
 							}
 						],
 						"url": {
@@ -501,7 +623,7 @@
 					"response": []
 				},
 				{
-					"name": "{{url}}/api/user",
+					"name": "Update User Details",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -511,7 +633,8 @@
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "e81a612d-d9de-4a43-b0e2-b449eb0ab76c"
 							}
 						],
 						"body": {
@@ -537,14 +660,15 @@
 					"response": []
 				},
 				{
-					"name": "{{url}}/api/admin",
+					"name": "Get Admin  Details",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "x-access-token",
 								"value": "{{token}}",
-								"type": "text"
+								"type": "text",
+								"uuid": "072cf0fa-8369-4497-bee6-b882c2b65f22"
 							}
 						],
 						"url": {
@@ -555,6 +679,183 @@
 							"path": [
 								"api",
 								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gift Management",
+			"item": [
+				{
+					"name": "Add Gift",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "26fca03c-acf9-4989-b346-d7ff9d165ba4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eventId\":1,\n    \"guestId\":1,\n    \"amount\":\"100\",\n    \"note\": \"dummy notes may be optional\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/gift",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"gift"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add Gift with add guest",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"eventId\":1,\n    \"guestId\":-1, // if guest id is in negative that means we have to add guest so guestInfo should be in data array\n    \"guestInfo\": {\n        \"name\": \"Mayank Singh\",\n        \"phoneNumber\": \"1234512345\"\n    },\n    \"amount\":\"100\",\n    \"note\": \"dummy notes may be optional\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/gift",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"gift"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get all Gifts with sorting and filters",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"type": "text",
+								"uuid": "e56e756c-1a3b-4ad1-aed0-8d5605adf460"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Gifts",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "8cfec7d8-b327-45cb-82a7-dca4f9be7eec"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eventId\":1,\n    \"guestId\":1,\n    \"amount\":\"100\",\n    \"note\": \"dummy notes may be optional\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/gift",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"gift"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gifts",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"uuid": "449bbb9f-8efb-4ddb-934f-316fced89810"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eventId\":1,\n    \"guestId\":1,\n    \"amount\":\"100\",\n    \"note\": \"dummy notes may be optional\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/gift",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"gift"
 							]
 						}
 					},
