@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import db from '../models/index.js';
 
 const { events: Event, event_guests: EventGuests } = db;
@@ -15,14 +16,30 @@ export const addEvent = (req, res) => {
 export const getEvent = async (req, res) => {
   try {
     const { userId } = req;
-    const { page = 1, limit = 10 } = req.query; // default page 1 & default limit 10
+    const { page = 1, limit = 10, sort = 'createdAt', order = 'DESC', filter = '{}' } = req.query; // default page 1, default limit 10, default sort by createdAt, default order DESC, default filter {}
 
     const parsedPage = parseInt(page, 10);
     const parsedLimit = parseInt(limit, 10);
 
     const offset = (parsedPage - 1) * parsedLimit;
 
-    const events = await Event.findAndCountAll({ where: { userId }, limit: parsedLimit, offset });
+    let parsedFilter = {};
+    try {
+      parsedFilter = JSON.parse(filter); // Try to parse filter
+    } catch (err) {
+      console.error('Error parsing filter:', err);
+      res.status(400).send({ message: 'Invalid filter format' });
+      return;
+    }
+
+    const whereClause = { userId, ...parsedFilter }; // Add filtering
+
+    const events = await Event.findAndCountAll({ 
+      where: whereClause, 
+      limit: parsedLimit, 
+      offset, 
+      order: [[sort, order]] // Add sorting
+    });
 
     const totalPages = Math.ceil(events.count / parsedLimit);
     if (parsedPage > totalPages) {
