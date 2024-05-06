@@ -1,3 +1,4 @@
+import e from 'cors';
 import db from '../models/index.js';
 
 const { guests: Guest } = db;
@@ -44,5 +45,56 @@ export const updateGuest = (req, res) => {
   }).catch((err) => {
     console.error('Error updating guest:', err);
     res.status(500).send({ message: `Error updating Guest with id=${  guestId}` });
+  });
+};
+
+export const getGuests = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { page = 1, limit = 10, sort = 'createdAt', order = 'DESC' } = req.query;
+
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+
+    const offset = (parsedPage - 1) * parsedLimit;
+
+    const guests = await Guest.findAndCountAll({ 
+      where: { userId }, 
+      limit: parsedLimit, 
+      offset, 
+      order: [[sort, order]] // Add sorting
+    });
+
+    const totalPages = Math.ceil(guests.count / parsedLimit);
+    if (parsedPage > totalPages) {
+      res.status(400).send({ error: true, message: 'No data found' });
+      return;
+    }
+    res.status(200).send({
+      error: false,
+      message: 'Request completed',
+      guests: guests.rows,
+      currentPage: parsedPage,
+      totalPages,
+      totalData: guests.count
+    });
+  } catch (err) {
+    console.error('Error getting guests:', err);
+    res.status(500).send({ message: 'Error getting guests' });
+  }
+};
+
+export const getGuestByid = (req, res) => {
+  const { userId } = req;
+  const { guestId } = req.params;
+  Guest.findOne({ where: { userId, guestId } }).then((guest) => {
+    if (guest) {
+      res.send({ data: guest });
+    } else {
+      res.send({ message: 'Guest not found!' });
+    }
+  }).catch((err) => {
+    console.error('Error getting guest:', err);
+    res.status(500).send({ message: 'Error getting guest' });
   });
 };
