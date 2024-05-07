@@ -1,4 +1,6 @@
+import bcrypt from 'bcryptjs';
 import { updateUsers, getUserDetails, adminBoard } from '../userController.js';
+import { HASHED_PASSWORD } from '../../utils/constant.js';
 
 test('checks if updateUsers function works correctly', async () => {
   const req = {
@@ -6,7 +8,7 @@ test('checks if updateUsers function works correctly', async () => {
     body: {
       fullName: 'John Doe',
       phoneNumber: '1234567890',
-      password: 'password123'
+      password: bcrypt.hashSync('password123', HASHED_PASSWORD)
     }
   };
 
