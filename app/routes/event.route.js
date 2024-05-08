@@ -21,7 +21,7 @@ export default function guestRoutes(app) {
   app.get('/event/:eventId', [authJwt.verifyToken], getEventByid);
 
   app.post('/event', [authJwt.verifyToken, validate.addEventValidation], addEvent);
-  app.post('/event/update', [authJwt.verifyToken], updateStatus);
+  app.put('/event', [authJwt.verifyToken], updateStatus);
   app.post('/event/guests', [authJwt.verifyToken], addGuestToEvent);
   
   app.delete('/event/:eventId', [authJwt.verifyToken], deleteById);
