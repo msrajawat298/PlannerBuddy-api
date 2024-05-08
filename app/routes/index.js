@@ -22,7 +22,7 @@ const applyBodyParsers = (app) => {
 const applyNotFoundHandler = (app) => {
   // Catch-all route for unmatched routes
   app.use((req, res) => {
-    res.status(404).json({ message: 'Route not found' });
+    res.status(404).json({error: true, message: 'Route not found' });
   });
 };
 
