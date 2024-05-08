@@ -11,7 +11,6 @@ const userUpdateValidation = (req, res, next) => {
 
   // Validate data against schema
   const { error } = schema.validate(req.body);
-
   if (error) return res.status(400).send({error: true, message: error.details[0].message });
   return next();
 };
