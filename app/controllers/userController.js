@@ -8,10 +8,9 @@ export const updateUsers = async (req, res) => {
   try {
     const { userId } = req;
     const { fullName, phoneNumber, password, address } = req.body;
-
-    
-    const userUpdated = await USER.update({ fullName, phoneNumber, password: bcrypt.hashSync(password, HASHED_PASSWORD), address }, { where: { id: userId } });
-
+    const updateFields = { fullName, phoneNumber, address };
+    if (password) updateFields.password = bcrypt.hashSync(password, HASHED_PASSWORD);
+    const userUpdated = await USER.update({ fullName, phoneNumber, password, address }, { where: { id: userId } });
     if (!userUpdated) res.status(404).send({ error: true, message: 'Not found' });
 
     res.status(200).send({ error: false, message: 'Request completed' });
