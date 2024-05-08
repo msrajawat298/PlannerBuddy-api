@@ -5,7 +5,8 @@ const userUpdateValidation = (req, res, next) => {
   const schema = Joi.object({
     fullName: Joi.string().min(3).max(30),
     password: Joi.string().min(8),
-    phoneNumber: Joi.string().regex(/^\d{10}$/).messages({'string.pattern.base': 'Phone number must have 10 digits.'})
+    phoneNumber: Joi.string().regex(/^\d{10}$/).messages({'string.pattern.base': 'Phone number must have 10 digits.'}),
+    address: Joi.string().min(3)
   });
 
   // Validate data against schema
