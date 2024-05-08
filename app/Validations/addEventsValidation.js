@@ -6,8 +6,7 @@ const addEventValidation = (req, res, next) => {
     eventName: Joi.string().min(3).max(30).required(),
     eventDate: Joi.date().iso().required(),
     eventTime: Joi.string()
-      .regex(/^\d{2}:\d{2}$/)
-      .required(),
+      .regex(/^\d{2}:\d{2}$/),
     eventLocation: Joi.string().required()
     // You can add more validation rules as needed
   });
