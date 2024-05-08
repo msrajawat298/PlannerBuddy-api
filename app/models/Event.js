@@ -21,7 +21,8 @@ export default (sequelize, Sequelize) => {
       },
       eventTime: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: '00:00'
       },
       eventLocation: {
         type: Sequelize.STRING,

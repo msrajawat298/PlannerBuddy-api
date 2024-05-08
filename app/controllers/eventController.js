@@ -1,13 +1,15 @@
-import { Op } from 'sequelize';
 import db from '../models/index.js';
 
 const { events: Event, event_guests: EventGuests } = db;
 
-export const addEvent = (req, res) => {
+export const addEvent = async (req, res) => {
   try {
-    const event = new Event({ ...req.body, userId: req.userId, eventStatus: 11 });
-    event.save();
-    res.status(200).send({ error: false, message: 'Event added successfully' });
+    const event = await Event.create({
+      ...req.body,
+      userId: req.userId,
+      eventStatus: 11
+    });
+    res.status(200).send({ error: false, message: 'Event added successfully', eventId: event.eventId});
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }
