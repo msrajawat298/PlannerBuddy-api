@@ -21,7 +21,6 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "prepare": "husky",
     "test": "jest --watch --coverage=false",
     "testDebug": "jest -o --watch --coverage=false",
     "test:coverage": "jest --coverage",
