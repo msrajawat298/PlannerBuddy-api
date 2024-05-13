@@ -9,7 +9,9 @@ export const addEvent = async (req, res) => {
       userId: req.userId,
       eventStatus: 11
     });
-    res.status(200).send({ error: false, message: 'Event added successfully', eventId: event.eventId});
+    res
+      .status(200)
+      .send({ error: false, message: 'Event added successfully', eventId: event.eventId });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }
@@ -36,10 +38,10 @@ export const getEvent = async (req, res) => {
 
     const whereClause = { userId, ...parsedFilter }; // Add filtering
 
-    const events = await Event.findAndCountAll({ 
-      where: whereClause, 
-      limit: parsedLimit, 
-      offset, 
+    const events = await Event.findAndCountAll({
+      where: whereClause,
+      limit: parsedLimit,
+      offset,
       order: [[sort, order]] // Add sorting
     });
 
@@ -137,5 +139,21 @@ export const addGuestToEvent = async (req, res) => {
     res.status(200).send({ error: false, message: 'Guests added successfully' });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
+  }
+};
+
+export const getEventGuests = async (req, res) => {
+  try {
+    const eventGuests = await EventGuests.findAll({ where: { eventId: req.query.eventId } });
+    if (!eventGuests) {
+      return res.status(404).send({ error: true, message: 'Data not found' });
+    }
+    const eventGuestsData = {
+      eventId: eventGuests[0].eventId, // Assuming eventId is common
+      guestId: eventGuests.map((eventGuest) => eventGuest.guestId)
+    };
+    return res.status(200).send({ error: false, message: 'Request completed', eventGuestsData });
+  } catch (err) {
+    return res.status(500).send({ error: true, message: err.message });
   }
 };
