@@ -1,7 +1,6 @@
 import express from 'express';
-import { createEventGift } from '../controllers/giftController.js';
+import { createEventGift, getEventGifts } from '../controllers/giftController.js';
 import authJwt from '../middleware/authJwt.js';
-import validate from '../Validations/giftValidation.js';
 
 export default function guestRoutes(app) {
   app.use((req, res, next) => {
@@ -9,5 +8,7 @@ export default function guestRoutes(app) {
     next();
   });
   app.use(express.json());
+  app.get('/api/gift', [authJwt.verifyToken], getEventGifts);
+  
   app.post('/api/gift', [authJwt.verifyToken], createEventGift);
 }

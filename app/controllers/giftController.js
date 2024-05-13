@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'; 
 import db from '../models/index.js';
 
 const { event_gift: EventGift, guests: Guest, event_guests: EventGuest } = db;
@@ -34,6 +35,7 @@ export const createEventGift = async (req, res) => {
 
     // Create the event gift
     const eventGift = await EventGift.create({
+      userId,
       eventId: eventData.eventid,
       guestId,
       amount: eventData.amount,
@@ -43,5 +45,57 @@ export const createEventGift = async (req, res) => {
     return res.status(200).send({ error: false, message: 'Gift added', eventGift }); // Return the created event gift for confirmation
   } catch (error) {
     return res.status(500).send({ error: true, message: error.message });
+  }
+};
+
+export const getEventGifts = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { page = 1, limit = 10, sort = 'createdAt', order = 'DESC', filter = '{}' } = req.query;
+
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+
+    const offset = (parsedPage - 1) * parsedLimit;
+
+    let parsedFilter = {};
+    try {
+      parsedFilter = JSON.parse(filter);
+    } catch (err) {
+      console.error('Error parsing filter:', err);
+      res.status(400).send({ message: 'Invalid filter format' });
+      return;
+    }
+
+    if (parsedFilter.name) {
+      parsedFilter.name = { [Op.like]: `%${parsedFilter.name}%` };
+    }
+
+    const whereClause = { userId, ...parsedFilter };
+
+    const eventGifts = await EventGift.findAndCountAll({
+      where: whereClause,
+      limit: parsedLimit,
+      offset,
+      order: [[sort, order]]
+    });
+
+    const totalPages = Math.ceil(eventGifts.count / parsedLimit);
+    if (parsedPage > totalPages) {
+      res.status(400).send({ error: true, message: 'No data found' });
+      return;
+    }
+
+    res.status(200).send({
+      error: false,
+      message: 'Request completed',
+      eventGifts: eventGifts.rows,
+      currentPage: parsedPage,
+      totalPages,
+      totalData: eventGifts.count
+    });
+  } catch (err) {
+    console.error('Error getting event gifts:', err);
+    res.status(500).send({ message: 'Error getting event gifts' });
   }
 };
