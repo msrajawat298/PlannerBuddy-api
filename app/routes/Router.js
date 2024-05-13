@@ -2,6 +2,7 @@ import authRoutes from './auth.routes.js';
 import userRoutes from './user.routes.js';
 import guestRoutes from './guest.routes.js';
 import eventRoutes from './event.route.js';
+import giftsRoutes from './gifts.routes.js';
 
 const applyRoutes = (app) => {
   // simple route
@@ -19,6 +20,7 @@ const applyRoutes = (app) => {
   userRoutes(app);
   guestRoutes(app);
   eventRoutes(app);
+  giftsRoutes(app);
 };
 
 export default applyRoutes;
