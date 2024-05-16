@@ -7,39 +7,40 @@ const { event_gift: EventGift, guests: Guest, event_guests: EventGuest, events: 
 export const createEventGift = async (req, res) => {
   try {
     // Check if the guest exists or create a new guest
-    const eventData = req.body;
+    const giftData = req.body;
     const { userId } = req;
     let guestId;
-    if (!eventData.guestId) {
+    if (!giftData.guestId) {
       // Create the guest
       const guest = await Guest.create({
         userId,
-        name: eventData.guestInfo.name,
-        email: eventData.guestInfo.email,
-        phoneNumber: eventData.guestInfo.phoneNumber,
-        address: eventData.guestInfo.address
+        name: giftData.guestInfo.name,
+        email: giftData.guestInfo.email,
+        phoneNumber: giftData.guestInfo.phoneNumber,
+        address: giftData.guestInfo.address,
+        isYourGift: giftData.isYourGift
       });
 
       // Assign the guestId for creating EventGift
       guestId = guest.dataValues.guestId;
       // Create association between event and guest
       await EventGuest.create({
-        eventId: eventData.eventId,
+        eventId: giftData.eventId,
         guestId
       });
     } else {
       // Use the provided guestID
-      guestId = eventData.guestId;
+      guestId = giftData.guestId;
     }
-    console.log('eventData:', eventData.isYourGift);
+    console.log('eventData:', giftData.isYourGift);
     // Create the event gift
     const eventGift = await EventGift.create({
       userId,
-      eventId: eventData.eventId,
+      eventId: giftData.eventId,
       guestId,
-      amount: eventData.amount,
-      note: eventData.note,
-      isYourGift: eventData.isYourGift
+      amount: giftData.amount,
+      note: giftData.note,
+      isYourGift: giftData.isYourGift
     });
 
     return res.status(200).send({ error: false, message: 'Gift added', data: {giftId: eventGift.giftId} }); // Return the created event gift for confirmation
