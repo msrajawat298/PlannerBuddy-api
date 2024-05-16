@@ -67,8 +67,8 @@ export const getEventGifts = async (req, res) => {
       return;
     }
 
-    if (parsedFilter.name) {
-      parsedFilter.name = { [Op.like]: `%${parsedFilter.name}%` };
+    if (parsedFilter.note) {
+      parsedFilter.note = { [Op.like]: `%${parsedFilter.note}%` };
     }
 
     const whereClause = { userId, ...parsedFilter };
