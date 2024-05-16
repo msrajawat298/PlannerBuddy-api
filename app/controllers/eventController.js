@@ -4,23 +4,26 @@ import db from '../models/index.js';
 const { events: Event, event_guests: EventGuests, guests: Guest } = db;
 
 export const addEvent = async (req, res) => {
+  const transaction = await db.sequelize.transaction();
   try {
     const { isYourEvent } = req.body;
     const event = await Event.create({
       ...req.body,
       userId: req.userId,
       eventStatus: 11
-    });
+    }, { transaction });
     if ( isYourEvent === 'no' ) {
       await EventGuests.create({
         eventId: event.eventId,
         guestId: req.body.guestId
-      });
+      }, { transaction });
     } 
+    await transaction.commit();
     res
       .status(200)
       .send({ error: false, message: 'Event added successfully', eventId: event.eventId });
   } catch (err) {
+    await transaction.rollback();
     res.status(500).send({ error: true, message: err.message });
   }
 };
