@@ -14,7 +14,7 @@ export const addGuest = (req, res) => Guest.create({ ...req.body, userId: req.us
 
 // Method to delete a guest
 export const deleteGuest = (req, res) => {
-  const { guestId } = req.query;
+  const { guestId } = req.params;
   const { userId } = req;
 
   Guest.destroy({ where: { guestId, userId }}).then(num => {

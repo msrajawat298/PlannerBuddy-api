@@ -35,5 +35,11 @@ db.events.hasMany(db.event_guests, { foreignKey: 'eventId' });
 db.event_guests.belongsTo(db.guests, { foreignKey: 'guestId' }); 
 db.guests.hasMany(db.event_guests, { foreignKey: 'guestId' });
 
+db.event_gift.belongsTo(db.events, { foreignKey: 'eventId' }); 
+db.events.hasMany(db.event_gift, { foreignKey: 'eventId' });
+
+db.event_gift.belongsTo(db.guests, { foreignKey: 'guestId' }); 
+db.guests.hasMany(db.event_gift, { foreignKey: 'guestId' });
+
 
 export default db;

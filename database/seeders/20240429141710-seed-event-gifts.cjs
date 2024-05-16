@@ -18,8 +18,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    // Add commands to revert seed here.
-    // Example:
     await queryInterface.bulkDelete('event_gifts', null, {});
   }
 };

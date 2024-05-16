@@ -13,5 +13,5 @@ export default function guestRoutes(app) {
 
   app.put('/guest/:guestId', [authJwt.verifyToken, GuestValidation(false)], updateGuest);
 
-  app.delete('/guest', [authJwt.verifyToken], deleteGuest);
+  app.delete('/guest/:guestId', [authJwt.verifyToken], deleteGuest);
 }
