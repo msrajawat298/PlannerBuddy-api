@@ -7,8 +7,8 @@ const addEventValidation = (req, res, next) => {
     eventDate: Joi.date().iso().required(),
     eventTime: Joi.string()
       .regex(/^\d{2}:\d{2}$/),
-    eventLocation: Joi.string().required()
-    // You can add more validation rules as needed
+    eventLocation: Joi.string().required(),
+    isYourEvent: Joi.string().valid('yes', 'no').default('yes')
   });
 
   // Validate data against schema

@@ -46,7 +46,7 @@ export const getEvent = async (req, res) => {
       limit: parsedLimit,
       offset,
       order: [[sort, order]],
-      attributes: ['eventId', 'eventName', 'eventDate', 'eventLocation'],
+      attributes: ['eventId', 'eventName', 'eventDate', 'eventLocation', 'isYourEvent'],
       include: [{
         model: EventGuests,
         attributes: ['guestId'],
