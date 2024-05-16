@@ -1,6 +1,7 @@
+import { Op } from 'sequelize'; 
 import db from '../models/index.js';
 
-const { events: Event, event_guests: EventGuests } = db;
+const { events: Event, event_guests: EventGuests, guests: Guest } = db;
 
 export const addEvent = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ export const addEvent = async (req, res) => {
 export const getEvent = async (req, res) => {
   try {
     const { userId } = req;
-    const { page = 1, limit = 10, sort = 'createdAt', order = 'DESC', filter = '{}' } = req.query; // default page 1, default limit 10, default sort by createdAt, default order DESC, default filter {}
+    const { page = 1, limit = 10, sort = 'eventDate', order = 'DESC', filter = '{}' } = req.query;
 
     const parsedPage = parseInt(page, 10);
     const parsedLimit = parseInt(limit, 10);
@@ -29,20 +30,31 @@ export const getEvent = async (req, res) => {
 
     let parsedFilter = {};
     try {
-      parsedFilter = JSON.parse(filter); // Try to parse filter
+      parsedFilter = JSON.parse(filter);
     } catch (err) {
       console.error('Error parsing filter:', err);
       res.status(400).send({ message: 'Invalid filter format' });
       return;
     }
-
+    if (parsedFilter.eventName) {
+      parsedFilter.eventName = { [Op.like]: `%${parsedFilter.eventName}%` };
+    }
     const whereClause = { userId, ...parsedFilter }; // Add filtering
 
     const events = await Event.findAndCountAll({
       where: whereClause,
       limit: parsedLimit,
       offset,
-      order: [[sort, order]] // Add sorting
+      order: [[sort, order]],
+      attributes: ['eventId', 'eventName', 'eventDate', 'eventLocation'],
+      include: [{
+        model: EventGuests,
+        attributes: ['guestId'],
+        include: [{
+          model: Guest,
+          attributes: ['guestId', 'name', ['phoneNumber', 'phone']]
+        }]
+      }]
     });
 
     const totalPages = Math.ceil(events.count / parsedLimit);
@@ -72,12 +84,19 @@ export const getEventByid = async (req, res) => {
       res.status(422).send({ error: true, message: 'eventId is required' });
     }
 
-    const events = await Event.findOne({ where: { userId, eventId } });
+    const events = await Event.findOne({ where: { userId, eventId },
+      include: [{
+        model: EventGuests,
+        attributes: ['guestId'],
+        include: [{
+          model: Guest,
+          attributes: ['guestId', 'name', ['phoneNumber', 'phone']]
+        }]
+      }] });
 
     if (!events || userId !== events.userId) {
       res.status(404).send({ error: true, message: 'Data not found' });
     }
-
     res.status(200).send({ error: false, message: 'Request completed', event: events });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
