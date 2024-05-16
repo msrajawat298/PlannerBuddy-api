@@ -8,6 +8,10 @@ export default (sequelize, Sequelize) => {
         allowNull: false,
         primaryKey: true // Define id as primary key
       },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       eventId: {
         type: Sequelize.INTEGER,
         allowNull: false
