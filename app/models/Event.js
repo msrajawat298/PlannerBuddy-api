@@ -11,6 +11,11 @@ export default (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      isYourEvent: {
+        type: Sequelize.ENUM('yes', 'no'),
+        allowNull: false,
+        defaultValue: 'yes'
+      },
       eventName: {
         type: Sequelize.STRING,
         allowNull: false

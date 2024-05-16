@@ -5,7 +5,8 @@ import {
   getEventByid,
   deleteById,
   updateStatus,
-  addGuestToEvent
+  addGuestToEvent,
+  getEventGuests
 } from '../controllers/eventController.js';
 import authJwt from '../middleware/authJwt.js';
 import validate from '../Validations/addEventsValidation.js';
@@ -25,4 +26,5 @@ export default function guestRoutes(app) {
   app.post('/event/guests', [authJwt.verifyToken], addGuestToEvent);
   
   app.delete('/event/:eventId', [authJwt.verifyToken], deleteById);
+  app.get('/event-guests', [authJwt.verifyToken], getEventGuests);
 }

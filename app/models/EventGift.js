@@ -6,7 +6,16 @@ export default (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
-        primaryKey: true // Define id as primary key
+        primaryKey: true
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      isYourGift: {
+        type: Sequelize.ENUM('yes', 'no'),
+        allowNull: false,
+        defaultValue: 'yes'
       },
       eventId: {
         type: Sequelize.INTEGER,
@@ -29,10 +38,5 @@ export default (sequelize, Sequelize) => {
       timestamps: true
     }
   );
-
-  // Define associations
-  //   EventGift.belongsTo(sequelize.models.Event, { foreignKey: 'eventId', as: 'event' }); // EventGift belongs to Event
-  //   EventGift.belongsTo(sequelize.models.Guest, { foreignKey: 'guestId', as: 'guest' }); // EventGift belongs to Guest
-
   return EventGift;
 };
