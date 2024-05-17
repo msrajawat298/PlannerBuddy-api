@@ -158,18 +158,29 @@ export const deleteById = async (req, res) => {
 export const addGuestToEvent = async (req, res) => {
   try {
     const { eventId, guestId } = req.body;
+    
     // Filter out duplicate guestIds
     const uniqueGuestIds = [...new Set(guestId)];
-
+    
     // Prepare the data to be inserted
     const eventData = uniqueGuestIds.map((id) => ({ eventId, guestId: id }));
-    // Perform bulk create operation, ignoring duplicates
-    await EventGuests.bulkCreate(eventData, { ignoreDuplicates: true });
+    // Start a transaction
+    await db.sequelize.transaction(async (transaction) => {
+      // Delete all guests associated with the eventId
+      await EventGuests.destroy({
+        where: { eventId },
+        transaction
+      });
+      // Perform bulk create operation
+      await EventGuests.bulkCreate(eventData, { transaction });
+    });
+
     res.status(200).send({ error: false, message: 'Guests added successfully' });
   } catch (err) {
     res.status(500).send({ error: true, message: err.message });
   }
 };
+
 
 export const getEventGuests = async (req, res) => {
   try {

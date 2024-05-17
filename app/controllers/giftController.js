@@ -32,7 +32,6 @@ export const createEventGift = async (req, res) => {
       // Use the provided guestID
       guestId = giftData.guestId;
     }
-    console.log('eventData:', giftData.isYourGift);
     // Create the event gift
     const eventGift = await EventGift.create({
       userId,
