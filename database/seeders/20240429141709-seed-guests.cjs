@@ -5,7 +5,7 @@ module.exports = {
       userId: 1,
       name: `User ${Math.floor(Math.random() * 100) + 1}`,
       email: `user${Math.floor(Math.random() * 100) + 1}@example.com`,
-      phoneNumber: `998877${Math.floor(100000 + Math.random() * 900000)}`, // Generates a random 6-digit number
+      phoneNumber: `9988${Math.floor(100000 + Math.random() * 900000)}`, // Generates a random 6-digit number
       address: `Address ${Math.floor(Math.random() * 100) + 1}`,
       createdAt: new Date(),
       updatedAt: new Date()

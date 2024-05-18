@@ -16,7 +16,14 @@ export default (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     phoneNumber: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      unique: true,
+      validate: {
+        len: {
+          args: [10, 10],
+          msg: 'Phone number length should be 10'
+        }
+      }
     },
     address: {
       type: Sequelize.STRING

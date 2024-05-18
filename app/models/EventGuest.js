@@ -1,5 +1,3 @@
-import { Op } from 'sequelize';
-
 export default (sequelize, Sequelize) => {
   const EventGuest = sequelize.define(
     'event_guests',
