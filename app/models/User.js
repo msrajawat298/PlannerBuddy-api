@@ -15,6 +15,14 @@ export default (sequelize, Sequelize) => {
     address: {
       type: Sequelize.STRING,
       allowNull: true
+    },
+    otp: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    otpExpires: {
+      type: Sequelize.DATE,
+      allowNull: true
     }
   });
 
