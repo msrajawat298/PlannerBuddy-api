@@ -15,6 +15,19 @@ const userUpdateValidation = (req, res, next) => {
   return next();
 };
 
-const validate = { userUpdateValidation };
+const changePasswordValidation = (req, res, next) => {
+  // Define validation schema
+  const schema = Joi.object({
+    oldPassword: Joi.string().min(8).required(),
+    password: Joi.string().min(8).required()
+  });
+
+  // Validate data against schema
+  const { error } = schema.validate(req.body);
+  if (error) return res.status(400).send({error: true, message: error.details[0].message });
+  return next();
+};
+
+const validate = { userUpdateValidation, changePasswordValidation };
 
 export default validate;
