@@ -149,6 +149,7 @@ export const syncGuest = async (req, res) => {
     // Check for duplicates in the database
     const existingGuests = await Guest.findAll({
       where: {
+        userId,
         phoneNumber: {
           [db.Sequelize.Op.in]: phoneNumbers
         }
