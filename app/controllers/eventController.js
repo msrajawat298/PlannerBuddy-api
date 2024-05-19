@@ -181,7 +181,6 @@ export const addGuestToEvent = async (req, res) => {
   }
 };
 
-
 export const getEventGuests = async (req, res) => {
   try {
     const eventGuests = await EventGuests.findAll({ where: { eventId: req.query.eventId } });
