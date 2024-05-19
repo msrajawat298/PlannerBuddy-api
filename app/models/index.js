@@ -7,7 +7,7 @@ import createEventModel from './Event.js';
 import createEventGuestModel from './EventGuest.js';
 import createEventGiftModel from './EventGift.js';
 
-const sequelize = new Sequelize({...DB_CONFIG});
+const sequelize = new Sequelize({ ...DB_CONFIG });
 
 const db = {
   Sequelize,
@@ -21,25 +21,19 @@ const db = {
   ROLES: ['user', 'admin']
 };
 
-db.role.belongsToMany(db.user, {
-  through: 'user_roles'
-});
-db.user.belongsToMany(db.role, {
-  through: 'user_roles'
-});
-db.ROLES = ['user', 'admin'];
+db.role.belongsToMany(db.user, { through: 'user_roles' });
+db.user.belongsToMany(db.role, { through: 'user_roles' });
 
-db.event_guests.belongsTo(db.events, { foreignKey: 'eventId' }); 
-db.events.hasMany(db.event_guests, { foreignKey: 'eventId' });
+db.events.hasMany(db.event_guests, { foreignKey: 'eventId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+db.event_guests.belongsTo(db.events, { foreignKey: 'eventId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-db.event_guests.belongsTo(db.guests, { foreignKey: 'guestId' }); 
-db.guests.hasMany(db.event_guests, { foreignKey: 'guestId' });
+db.guests.hasMany(db.event_guests, { foreignKey: 'guestId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+db.event_guests.belongsTo(db.guests, { foreignKey: 'guestId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-db.event_gift.belongsTo(db.events, { foreignKey: 'eventId' }); 
-db.events.hasMany(db.event_gift, { foreignKey: 'eventId' });
+db.events.hasMany(db.event_gift, { foreignKey: 'eventId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+db.event_gift.belongsTo(db.events, { foreignKey: 'eventId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
-db.event_gift.belongsTo(db.guests, { foreignKey: 'guestId' }); 
-db.guests.hasMany(db.event_gift, { foreignKey: 'guestId' });
-
+db.guests.hasMany(db.event_gift, { foreignKey: 'guestId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+db.event_gift.belongsTo(db.guests, { foreignKey: 'guestId', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
 export default db;
